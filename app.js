@@ -90,7 +90,7 @@ app.post("/webhook", function (request, response) {
                         to: '918866271602',
                         type: 'template',
                         template: {
-                          name: 'hello_world',
+                          name: 'pickup',
                           language: {
                             code: 'en_US',
                           },
@@ -112,6 +112,82 @@ app.post("/webhook", function (request, response) {
                         });
                     
                         }
+                if (textBody.includes("2")) {
+                    // Postman environment variables
+                    
+                    const postmanEnvironment = {
+                        UserAccessToken: 'EAAN8IwQAAloBO7MQob9Oz74ZB0DQNXvdnVpx9kjpUS0n0DeTVc3epuZBFOP4LMrs1ddlSeX0xX9HCcEKeUO1KZBxsExIgp0RwsTjKMpoFf6XZA2jOjfU518wK943ILPFUPZBLeZCBug9YKZCyEaWXIsSUcA6wMhmkawi2ZANB9mAXVBY7UwAlvWo6UMSuSCe4Gs2Cw14ai851dfa3QGpf4AZD',
+                      };
+                      
+                      // WhatsApp API endpoint
+                      const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                      
+                      // JSON data for the POST request
+                      const postData = {
+                        messaging_product: 'whatsapp',
+                        to: '918866271602',
+                        type: 'template',
+                        template: {
+                          name: 'delivery',
+                          language: {
+                            code: 'en_US',
+                          },
+                        },
+                      };
+                      
+                      // Send the POST request using axios
+                      axios.post(apiEndpoint, postData, {
+                        headers: {
+                          'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+                          'Content-Type': 'application/json',
+                        }
+                      })
+                        .then(response => {
+                          console.log('Message sent successfully:');
+                        })
+                        .catch(error => {
+                          console.error('Error sending message:' +error);
+                        });
+                    
+                        }
+                        if (textBody.includes("3")) {
+                            // Postman environment variables
+                            
+                            const postmanEnvironment = {
+                                UserAccessToken: 'EAAN8IwQAAloBO7MQob9Oz74ZB0DQNXvdnVpx9kjpUS0n0DeTVc3epuZBFOP4LMrs1ddlSeX0xX9HCcEKeUO1KZBxsExIgp0RwsTjKMpoFf6XZA2jOjfU518wK943ILPFUPZBLeZCBug9YKZCyEaWXIsSUcA6wMhmkawi2ZANB9mAXVBY7UwAlvWo6UMSuSCe4Gs2Cw14ai851dfa3QGpf4AZD',
+                              };
+                              
+                              // WhatsApp API endpoint
+                              const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                              
+                              // JSON data for the POST request
+                              const postData = {
+                                messaging_product: 'whatsapp',
+                                to: '918866271602',
+                                type: 'template',
+                                template: {
+                                  name: 'home_delivery',
+                                  language: {
+                                    code: 'en_US',
+                                  },
+                                },
+                              };
+                              
+                              // Send the POST request using axios
+                              axios.post(apiEndpoint, postData, {
+                                headers: {
+                                  'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+                                  'Content-Type': 'application/json',
+                                }
+                              })
+                                .then(response => {
+                                  console.log('Message sent successfully:');
+                                })
+                                .catch(error => {
+                                  console.error('Error sending message:' +error);
+                                });
+                            
+                                }
             }
             
         }
