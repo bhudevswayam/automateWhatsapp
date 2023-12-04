@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // Postman environment variables
 const postmanEnvironment = {
-  UserAccessToken: 'YOUR_USER_ACCESS_TOKEN', // Replace with your actual user access token
+  UserAccessToken: 'YOUR_USER_ACCESS_TOEAAN8IwQAAloBO0YsARG6f3RpPcArZCaSJNrEgDB5Aw3hyRbZByuQDwls5RF9RGWZCDdVceZAzZBO4v6YJ6xG7mi7I51L7wVcSN2RvyZAj1O7FZBb4tPd57pSyZAoyyj84ZBlhMsLkP2UlhSC226bDUwQhFWZB0av4GKWdIxMYJrCZBxZCEEkhenB9ZASIZAIupkkyNra6dLZAg54yQL1DaA5puCr1IZDKEN', // Replace with your actual user access token
 };
 
 app.get('/', function (request, response) {
