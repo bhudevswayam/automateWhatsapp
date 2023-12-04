@@ -78,11 +78,11 @@ app.post("/webhook", function (request, response) {
                     // Postman environment variables
                     
                     const postmanEnvironment = {
-                        UserAccessToken: 'EAAN8IwQAAloBO7MQob9Oz74ZB0DQNXvdnVpx9kjpUS0n0DeTVc3epuZBFOP4LMrs1ddlSeX0xX9HCcEKeUO1KZBxsExIgp0RwsTjKMpoFf6XZA2jOjfU518wK943ILPFUPZBLeZCBug9YKZCyEaWXIsSUcA6wMhmkawi2ZANB9mAXVBY7UwAlvWo6UMSuSCe4Gs2Cw14ai851dfa3QGpf4AZD',
+                        UserAccessToken: 'EAAN8IwQAAloBO0YsARG6f3RpPcArZCaSJNrEgDB5Aw3hyRbZByuQDwls5RF9RGWZCDdVceZAzZBO4v6YJ6xG7mi7I51L7wVcSN2RvyZAj1O7FZBb4tPd57pSyZAoyyj84ZBlhMsLkP2UlhSC226bDUwQhFWZB0av4GKWdIxMYJrCZBxZCEEkhenB9ZASIZAIupkkyNra6dLZAg54yQL1DaA5puCr1IZD',
                       };
                       
                       // WhatsApp API endpoint
-                      const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                      const apiEndpoint = 'https://graph.facebook.com/v17.0/104504676089992/messages';
                       
                       // JSON data for the POST request
                       const postData = {
