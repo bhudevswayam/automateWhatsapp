@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 const mongoURI = "mongodb+srv://swayampandya1236:Hgm4dqVLM4KRAIKE@dummydb.kklcpad.mongodb.net/?retryWrites=true&w=majority";
 
-
+const dbName = 'testdata';
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -44,20 +44,23 @@ app.post('/webhook', async function (req, res) {
           // Extract email from textBody
           const emailMatch = textBody.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g);
           const email = emailMatch ? emailMatch[0] : null;
-
+            const postmanEnvironment = {
+                UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
+              };
           if (email) {
             // Connect to MongoDB
-            const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+            const client = new MongoClient(mongoURI);
             await client.connect();
 
             // Access the database
-            const db = client.db(testdata);
+            const db = client.db('testdata');
 
             // Access the collection (replace 'your-collection-name' with the actual name)
             const collection = db.collection('sales');
 
             // Find data from MongoDB using email
             const mongoData = await collection.findOne({ 'customer.email': email });
+
 
             if (!mongoData) {
               // Handle the case where data is not found
