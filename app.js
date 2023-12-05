@@ -76,7 +76,7 @@ app.post('/webhook', async function (req, res) {
                 type: 'text',
                 text: {
                   preview_url: false,
-                  body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${mongoData}` // Replace 'yourField' with the actual field name from MongoDB
+                  body: `Your Store Location is: ${mongoData.storeLocation}. Your last bought item was ${mongoData.items[0].name} with quantity ${mongoData.items[0].quantity} and sub total of ${mongoData.items[0].price}` // Replace 'yourField' with the actual field name from MongoDB
                 }
               };
 
