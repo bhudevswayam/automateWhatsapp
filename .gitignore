@@ -1,0 +1,63 @@
+# Node.js
+node_modules/
+
+# Dependency directories
+lib/
+vendor/
+ 
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.idea/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+*.exe
+*.dll
+*.so
+*.out
+*.app
+
+# Temporary files
+*.swp
+*~
+*.tmp
+
+# Environment configuration files
+.env
+.env.local
+.env.*.local
+.env.test
+.env.testing
+.env.prod
+.env.production
+
+# Build output
+/build/
+/dist/
+
+# Ignore npm-debug.log
+npm-debug.log
+yarn-error.log
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.suo
+*.tss
+*.bak
+*.swp
