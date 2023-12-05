@@ -1,7 +1,10 @@
 const axios = require('axios');
 var express = require("express");
 var bodyParser = require("body-parser");
-const { MongoClient } = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+
+const mongoURI = "mongodb+srv://swayampandya1236:Hgm4dqVLM4KRAIKE@dummydb.kklcpad.mongodb.net/?retryWrites=true&w=majority";
+
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -48,10 +51,10 @@ app.post('/webhook', async function (req, res) {
             await client.connect();
 
             // Access the database
-            const db = client.db(dbName);
+            const db = client.db(testdata);
 
             // Access the collection (replace 'your-collection-name' with the actual name)
-            const collection = db.collection('your-collection-name');
+            const collection = db.collection('sales');
 
             // Find data from MongoDB using email
             const mongoData = await collection.findOne({ 'customer.email': email });
@@ -70,7 +73,7 @@ app.post('/webhook', async function (req, res) {
                 type: 'text',
                 text: {
                   preview_url: false,
-                  body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${mongoData.yourField}` // Replace 'yourField' with the actual field name from MongoDB
+                  body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${mongoData}` // Replace 'yourField' with the actual field name from MongoDB
                 }
               };
 
