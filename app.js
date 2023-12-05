@@ -1,9 +1,9 @@
 const axios = require('axios');
 var express = require("express");
 var bodyParser = require("body-parser");
+const { MongoClient } = require('mongodb');
 
 var app = express();
-let myName = "PANDYA SWAYAM"
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -23,42 +23,57 @@ app.get("/webhook", function (req, res) {
     res.sendStatus(400);
   }
 });
-
-app.post("/webhook", function (request, response) {
+app.post('/webhook', async function (req, res) {
   try {
-    const jsonData = request.body; // Parse the incoming JSON data
+    const jsonData = req.body;
     console.log(jsonData);
+
     if (jsonData.entry && jsonData.entry.length > 0) {
       const changes = jsonData.entry[0].changes;
+
       if (changes && changes.length > 0) {
         const messages = changes[0].value.messages;
+
         if (messages && messages.length > 0) {
           const textBody = messages[0].text.body.toLowerCase();
           console.log("Incoming webhook: " + textBody);
 
-            if (textBody.includes("hi") || textBody.includes("hello")) {
-            // Postman environment variables
-            
-            const postmanEnvironment = {
-                UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
-              };
-              
+          // Extract email from textBody
+          const emailMatch = textBody.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g);
+          const email = emailMatch ? emailMatch[0] : null;
+
+          if (email) {
+            // Connect to MongoDB
+            const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+            await client.connect();
+
+            // Access the database
+            const db = client.db(dbName);
+
+            // Access the collection (replace 'your-collection-name' with the actual name)
+            const collection = db.collection('your-collection-name');
+
+            // Find data from MongoDB using email
+            const mongoData = await collection.findOne({ 'customer.email': email });
+
+            if (!mongoData) {
+              // Handle the case where data is not found
+              console.log(`Data not found in MongoDB for email: ${email}`);
+            } else {
               // WhatsApp API endpoint
               const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
-              
+
               // JSON data for the POST request
               const postData = {
                 messaging_product: 'whatsapp',
                 to: '918866271602',
-                type: 'template',
-                template: {
-                  name: 'intro_message',
-                  language: {
-                    code: 'en',
-                  },
-                },
+                type: 'text',
+                text: {
+                  preview_url: false,
+                  body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${mongoData.yourField}` // Replace 'yourField' with the actual field name from MongoDB
+                }
               };
-              
+
               // Send the POST request using axios
               axios.post(apiEndpoint, postData, {
                 headers: {
@@ -70,135 +85,199 @@ app.post("/webhook", function (request, response) {
                   console.log('Message sent successfully:');
                 })
                 .catch(error => {
-                  console.error('Error sending message:' +error);
+                  console.error('Error sending message:' + error);
                 });
-            
-                }
-                if (textBody.includes("1")) {
-                    // Postman environment variables
-                    
-                    const postmanEnvironment = {
-                        UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
-                      };
-                      
-                      // WhatsApp API endpoint
-                      const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
-                      
-                      // JSON data for the POST request
-                      const postData = {
-                        messaging_product: 'whatsapp',
-                        recipient_type: "individual",
-                        to: '918866271602',
-                        type: 'text',
-                        text: { // the text object
-                          preview_url: false,
-                          body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${myName}`
-                          }
-                      };
-                      
-                      // Send the POST request using axios
-                      axios.post(apiEndpoint, postData, {
-                        headers: {
-                          'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
-                          'Content-Type': 'application/json',
-                        }
-                      })
-                        .then(response => {
-                          console.log('Message sent successfully:');
-                        })
-                        .catch(error => {
-                          console.error('Error sending message:' +error);
-                        });
-                    
-                        }
-                if (textBody.includes("2")) {
-                    // Postman environment variables
-                    
-                    const postmanEnvironment = {
-                        UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
-                      };
-                      
-                      // WhatsApp API endpoint
-                      const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
-                      
-                      // JSON data for the POST request
-                      const postData = {
-                        messaging_product: 'whatsapp',
-                        to: '918866271602',
-                        type: 'template',
-                        template: {
-                          name: 'delivery',
-                          language: {
-                            code: 'en_US',
-                          },
-                        },
-                      };
-                      
-                      // Send the POST request using axios
-                      axios.post(apiEndpoint, postData, {
-                        headers: {
-                          'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
-                          'Content-Type': 'application/json',
-                        }
-                      })
-                        .then(response => {
-                          console.log('Message sent successfully:');
-                        })
-                        .catch(error => {
-                          console.error('Error sending message:' +error);
-                        });
-                    
-                        }
-                        if (textBody.includes("3")) {
-                            // Postman environment variables
-                            
-                            const postmanEnvironment = {
-                                UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
-                              };
-                              
-                              // WhatsApp API endpoint
-                              const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
-                              
-                              // JSON data for the POST request
-                              const postData = {
-                                messaging_product: 'whatsapp',
-                                to: '918866271602',
-                                type: 'template',
-                                template: {
-                                  name: 'home_delivery',
-                                  language: {
-                                    code: 'en_US',
-                                  },
-                                },
-                              };
-                              
-                              // Send the POST request using axios
-                              axios.post(apiEndpoint, postData, {
-                                headers: {
-                                  'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
-                                  'Content-Type': 'application/json',
-                                }
-                              })
-                                .then(response => {
-                                  console.log('Message sent successfully:');
-                                })
-                                .catch(error => {
-                                  console.error('Error sending message:' +error);
-                                });
-                            
-                                }
             }
-            
+
+            // Close the MongoDB connection
+            client.close();
+          } else {
+            console.log('No email found in the textBody');
+          }
         }
+      }
     }
-    response.sendStatus(200);
+    res.sendStatus(200);
   } catch (error) {
     console.error("Error in /webhook:", error);
-    response.sendStatus(500); // Respond with an error status
+    res.sendStatus(500); // Respond with an error status
   }
 });
+// app.post("/webhook", function (request, response) {
+//   try {
+//     const jsonData = request.body; // Parse the incoming JSON data
+//     console.log(jsonData);
+//     if (jsonData.entry && jsonData.entry.length > 0) {
+//       const changes = jsonData.entry[0].changes;
+//       if (changes && changes.length > 0) {
+//         const messages = changes[0].value.messages;
+//         if (messages && messages.length > 0) {
+//           const textBody = messages[0].text.body.toLowerCase();
+//           console.log("Incoming webhook: " + textBody);
 
-var listener = app.listen(process.env.PORT || 3000, function () {
+//             if (textBody.includes("hi") || textBody.includes("hello")) {
+//             // Postman environment variables
+            
+//             const postmanEnvironment = {
+//                 UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
+//               };
+              
+//               // WhatsApp API endpoint
+//               const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+              
+//               // JSON data for the POST request
+//               const postData = {
+//                 messaging_product: 'whatsapp',
+//                 to: '918866271602',
+//                 type: 'template',
+//                 template: {
+//                   name: 'intro_message',
+//                   language: {
+//                     code: 'en',
+//                   },
+//                 },
+//               };
+              
+//               // Send the POST request using axios
+//               axios.post(apiEndpoint, postData, {
+//                 headers: {
+//                   'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+//                   'Content-Type': 'application/json',
+//                 }
+//               })
+//                 .then(response => {
+//                   console.log('Message sent successfully:');
+//                 })
+//                 .catch(error => {
+//                   console.error('Error sending message:' +error);
+//                 });
+            
+//                 }
+//                 if (textBody.includes("1")) {
+//                     // Postman environment variables
+                    
+//                     const postmanEnvironment = {
+//                         UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
+//                       };
+                      
+//                       // WhatsApp API endpoint
+//                       const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                      
+//                       // JSON data for the POST request
+//                       const postData = {
+//                         messaging_product: 'whatsapp',
+//                         recipient_type: "individual",
+//                         to: '918866271602',
+//                         type: 'text',
+//                         text: { // the text object
+//                           preview_url: false,
+//                           body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${myName}`
+//                           }
+//                       };
+                      
+//                       // Send the POST request using axios
+//                       axios.post(apiEndpoint, postData, {
+//                         headers: {
+//                           'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+//                           'Content-Type': 'application/json',
+//                         }
+//                       })
+//                         .then(response => {
+//                           console.log('Message sent successfully:');
+//                         })
+//                         .catch(error => {
+//                           console.error('Error sending message:' +error);
+//                         });
+                    
+//                         }
+//                 if (textBody.includes("2")) {
+//                     // Postman environment variables
+                    
+//                     const postmanEnvironment = {
+//                         UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
+//                       };
+                      
+//                       // WhatsApp API endpoint
+//                       const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                      
+//                       // JSON data for the POST request
+//                       const postData = {
+//                         messaging_product: 'whatsapp',
+//                         to: '918866271602',
+//                         type: 'template',
+//                         template: {
+//                           name: 'delivery',
+//                           language: {
+//                             code: 'en_US',
+//                           },
+//                         },
+//                       };
+                      
+//                       // Send the POST request using axios
+//                       axios.post(apiEndpoint, postData, {
+//                         headers: {
+//                           'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+//                           'Content-Type': 'application/json',
+//                         }
+//                       })
+//                         .then(response => {
+//                           console.log('Message sent successfully:');
+//                         })
+//                         .catch(error => {
+//                           console.error('Error sending message:' +error);
+//                         });
+                    
+//                         }
+//                         if (textBody.includes("3")) {
+//                             // Postman environment variables
+                            
+//                             const postmanEnvironment = {
+//                                 UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
+//                               };
+                              
+//                               // WhatsApp API endpoint
+//                               const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                              
+//                               // JSON data for the POST request
+//                               const postData = {
+//                                 messaging_product: 'whatsapp',
+//                                 to: '918866271602',
+//                                 type: 'template',
+//                                 template: {
+//                                   name: 'home_delivery',
+//                                   language: {
+//                                     code: 'en_US',
+//                                   },
+//                                 },
+//                               };
+                              
+//                               // Send the POST request using axios
+//                               axios.post(apiEndpoint, postData, {
+//                                 headers: {
+//                                   'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+//                                   'Content-Type': 'application/json',
+//                                 }
+//                               })
+//                                 .then(response => {
+//                                   console.log('Message sent successfully:');
+//                                 })
+//                                 .catch(error => {
+//                                   console.error('Error sending message:' +error);
+//                                 });
+                            
+//                                 }
+//             }
+            
+//         }
+//     }
+//     response.sendStatus(200);
+//   } catch (error) {
+//     console.error("Error in /webhook:", error);
+//     response.sendStatus(500); // Respond with an error status
+//   }
+// });
+
+var listener = app.listen(process.env.PORT || 3001, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
 
