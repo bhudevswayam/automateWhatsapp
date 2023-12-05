@@ -40,7 +40,7 @@ app.post("/webhook", function (request, response) {
             // Postman environment variables
             
             const postmanEnvironment = {
-                UserAccessToken: 'EAAN8IwQAAloBO7MQob9Oz74ZB0DQNXvdnVpx9kjpUS0n0DeTVc3epuZBFOP4LMrs1ddlSeX0xX9HCcEKeUO1KZBxsExIgp0RwsTjKMpoFf6XZA2jOjfU518wK943ILPFUPZBLeZCBug9YKZCyEaWXIsSUcA6wMhmkawi2ZANB9mAXVBY7UwAlvWo6UMSuSCe4Gs2Cw14ai851dfa3QGpf4AZD',
+                UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
               };
               
               // WhatsApp API endpoint
@@ -78,7 +78,7 @@ app.post("/webhook", function (request, response) {
                     // Postman environment variables
                     
                     const postmanEnvironment = {
-                        UserAccessToken: 'EAAN8IwQAAloBO8fuz8hCFQ3dgU1fRasRfulWWf2wO8FI9yR8tVCjGWmHvNIHeIVOYwegW2JOgl3BsT6G17RuZCRZCmDZCh67RQ4OJucZBbkcOJUtWANOAZAOIFHmbQXZCVbNesTNxV3htDFmNkPComYFUUO7ZBeWgFuwiy7OrTgVmzlZBnzcIhaTXiQpWZAWez1KVao62dj2GGyNUlFQ195kZD',
+                        UserAccessToken: 'EAAN8IwQAAloBOxxvPqXjWf3kklt1r4tQYp4xnvKSykqYzVX5i1LKPzCp5rE8kzUJbdttlKtbUx5occIZC4SZAwPy4VwZBI9k4G2C9ZACfwoNbiOulOLXH24REjZB8JvqeZCpiltoTsAcasn32WYdZCxA9R5K7RRRhuMkU2llaTVHrpaguwyCz0lNt8xuzq0BVPFO0Ee67ZAcbmYXHIoVmxAZD',
                       };
                       
                       // WhatsApp API endpoint
