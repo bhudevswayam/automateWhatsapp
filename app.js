@@ -3,7 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 
 var app = express();
-
+let myName = "PANDYA SWAYAM"
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -27,7 +27,7 @@ app.get("/webhook", function (req, res) {
 app.post("/webhook", function (request, response) {
   try {
     const jsonData = request.body; // Parse the incoming JSON data
-
+    console.log(jsonData);
     if (jsonData.entry && jsonData.entry.length > 0) {
       const changes = jsonData.entry[0].changes;
       if (changes && changes.length > 0) {
@@ -92,7 +92,7 @@ app.post("/webhook", function (request, response) {
                         type: 'text',
                         text: { // the text object
                           preview_url: false,
-                          body: "HII THIS IS SWAYAM FROM CUBENTINFOTECH"
+                          body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${myName}`
                           }
                       };
                       
