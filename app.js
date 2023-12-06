@@ -10,8 +10,8 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/", function (request, response) {
-  response.send(
+app.get("/", function (req, res) {
+  res.send(
     "Simple WhatsApp Webhook tester</br>There is no front-end, see server.js for implementation!"
   );
 });
@@ -72,11 +72,44 @@ app.post('/webhook', async function (req, res) {
               // JSON data for the POST request
               const postData = {
                 messaging_product: 'whatsapp',
+                recipient_type: "individual",
                 to: '918866271602',
                 type: 'text',
-                text: {
+                // template: {
+                //   name: "TEMPLATE_NAME",
+                //   language: {
+                //     code: "LANGUAGE_AND_LOCALE_CODE"
+                //   },
+                //   components: [
+                //     {
+                //       type: "body",
+                //       parameters: [
+                //         {
+                //           type: "text",
+                //           text: "text-string"
+                //         },
+                //         {
+                //           type: "currency",
+                //           currency: {
+                //             "fallback_value": "VALUE",
+                //             "code": "USD",
+                //             "amount_1000": NUMBER
+                //           }
+                //         },
+                //         {
+                //           type: "date_time",
+                //           date_time: {
+                //             "fallback_value": "DATE"
+                //           }
+                //         }
+                //       ]
+                //     }
+                //   ]
+                // }    
+                text: { 
                   preview_url: false,
-                  body: `Your Store Location is: ${mongoData.storeLocation}. Your last bought item was ${mongoData.items[0].name} with quantity ${mongoData.items[0].quantity} and sub total of ${mongoData.items[0].price}` // Replace 'yourField' with the actual field name from MongoDB
+                  body: `Your Store Location is: *${mongoData.storeLocation}*. 
+                  Your last bought item was *${mongoData.items[0].name}* with quantity *${mongoData.items[0].quantity}* and sub total of *${mongoData.items[0].price}*` // Replace 'yourField' with the actual field name from MongoDB
                 }
               };
 
