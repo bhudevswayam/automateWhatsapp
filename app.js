@@ -170,10 +170,23 @@ app.post("/webhook", function (request, response) {
                 to: '918866271602',
                 type: 'template',
                 template: {
-                  name: 'cake_hi_reply',
+                  name: 'cake_intro',
                   language: {
                     code: 'en',
                   },
+                  components: [
+                    {
+                      type: "header",
+                      parameters: [
+                        {
+                          type: "image",
+                          image: {
+                            link: "https://enterprise.press/wp-content/uploads/2020/12/monginis-1600px.jpg"
+                          }
+                        }
+                      ]
+                    }
+                  ]
                 },
               };
               
@@ -192,7 +205,7 @@ app.post("/webhook", function (request, response) {
                 });
             
                 }
-                if (textBody.includes("Catalog")) {
+                if (textBody.includes("catalog")) {
                     // Postman environment variables
                     
                     const postmanEnvironment = {
@@ -205,13 +218,14 @@ app.post("/webhook", function (request, response) {
                       // JSON data for the POST request
                       const postData = {
                         messaging_product: 'whatsapp',
-                        recipient_type: "individual",
                         to: '918866271602',
-                        type: 'text',
-                        text: { // the text object
-                          preview_url: false,
-                          body: `HII THIS IS SWAYAM FROM CUBENTINFOTECH ${myName}`
-                          }
+                        type: 'template',
+                        template: {
+                          name: 'pickup',
+                          language: {
+                            code: 'en_US',
+                          },
+                        },
                       };
                       
                       // Send the POST request using axios
@@ -229,7 +243,7 @@ app.post("/webhook", function (request, response) {
                         });
                     
                         }
-                if (textBody.includes("Special Offers")) {
+                if (textBody.includes("services")) {
                     // Postman environment variables
                     
                     const postmanEnvironment = {
