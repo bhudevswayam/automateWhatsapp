@@ -170,7 +170,7 @@ app.post("/webhook", function (request, response) {
                 to: '918866271602',
                 type: 'template',
                 template: {
-                  name: 'intro_message',
+                  name: 'cake_hi_reply',
                   language: {
                     code: 'en',
                   },
