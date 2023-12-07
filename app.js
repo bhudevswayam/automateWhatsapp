@@ -146,6 +146,8 @@ app.post("/webhook", function (request, response) {
   try {
     const jsonData = request.body; // Parse the incoming JSON data
     console.log(jsonData);
+    console.dir(jsonData, { depth: null });
+
     if (jsonData.entry && jsonData.entry.length > 0) {
       const changes = jsonData.entry[0].changes;
       if (changes && changes.length > 0) {
