@@ -207,7 +207,7 @@ app.post("/webhook", function (request, response) {
                 });
             
                 }
-                if (textBody.includes("catalog")) {
+                if (jsonData.entry[0].changes[0].value.messages[0].button.text.includes("Catalog")) {
                     // Postman environment variables
                     
                     const postmanEnvironment = {
@@ -245,7 +245,7 @@ app.post("/webhook", function (request, response) {
                         });
                     
                         }
-                if (textBody.includes("services")) {
+                if (jsonData.entry[0].changes[0].value.messages[0].button.text.includes("Special Offers")) {
                     // Postman environment variables
                     
                     const postmanEnvironment = {
@@ -439,3 +439,54 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 // const listener = app.listen(process.env.PORT || 3000, function () {
 //   console.log('Your app is listening on port ' + listener.address().port);
 // });
+
+
+
+// ===================Payload=================
+
+
+
+// {
+//     "object": "whatsapp_business_account",
+//     "entry": [
+//       {
+//         "id": "105774542583244",
+//         "changes": [
+//           {
+//             "value": {
+//               "messaging_product": "whatsapp",
+//               "metadata": {
+//                 "display_phone_number": "15551007051",
+//                 "phone_number_id": "107124295779726"
+//               },
+//               "contacts": [
+//                 {
+//                   "profile": {
+//                     "name": "Swayam Pandya"
+//                   },
+//                   "wa_id": "918866271602"
+//                 }
+//               ],
+//               "messages": [
+//                 {
+//                   "context": {
+//                     "from": "15551007051",
+//                     "id": "wamid.HBgMOTE4ODY2MjcxNjAyFQIAERgSMkY0MTlFMkIzMDA2RjJFNDk3AA=="
+//                   },
+//                   "from": "918866271602",
+//                   "id": "wamid.HBgMOTE4ODY2MjcxNjAyFQIAEhggNzMxMzc5MTVDNUQ2NjM0Q0ZGQkYwM0E1NjhGMjJBODQA",
+//                   "timestamp": "1701944780",
+//                   "type": "button",
+//                   "button": {
+//                     "payload": "Catalog",
+//                     "text": "Catalog"
+//                   }
+//                 }
+//               ]
+//             },
+//             "field": "messages"
+//           }
+//         ]
+//       }
+//     ]
+//   }
