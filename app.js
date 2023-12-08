@@ -34,7 +34,7 @@ app.post('/webhook', function (req, res) {
     const messages = jsonData.entry[0].changes[0].value.messages;
     const buttonText = messages[0].button ? messages[0].button.text : null;
     const normalText = messages[0].text ? messages[0].text.body.toLowerCase() : null;
-
+    const phnbr = messages[0].from;
     console.log("Incoming webhook (buttonText): " + buttonText);
     console.log("Incoming webhook (normalText): " + normalText);
 
@@ -51,7 +51,7 @@ app.post('/webhook', function (req, res) {
         // JSON data for the POST request
         const postData = {
           messaging_product: 'whatsapp',
-          to: '918866271602',
+          to: `${phnbr}`,
           type: 'template',
           template: {
             name: 'cake_hi_reply',
@@ -108,7 +108,7 @@ const postmanEnvironment = {
   // JSON data for the POST request
   const postData = {
     messaging_product: 'whatsapp',
-    to: '918866271602',
+    to: `${phnbr}`,
     type: 'template',
     template: {
       name: 'catalog',
@@ -159,7 +159,7 @@ const postmanEnvironment = {
   // JSON data for the POST request
   const postData = {
     messaging_product: 'whatsapp',
-    to: '918866271602',
+    to: `${phnbr}`,
     type: 'template',
     template: {
       name: 'special_offer',
@@ -236,7 +236,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //               // JSON data for the POST request
 //               const postData = {
 //                 messaging_product: 'whatsapp',
-//                 to: '918866271602',
+//                 to: `${phnbr}`,
 //                 type: 'template',
 //                 template: {
 //                   name: 'cake_hi_reply',
@@ -293,7 +293,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //         // JSON data for the POST request
 //         const postData = {
 //           messaging_product: 'whatsapp',
-//           to: '918866271602',
+//           to: `${phnbr}`,
 //           type: 'template',
 //           template: {
 //             name: 'pickup',
@@ -331,7 +331,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //         // JSON data for the POST request
 //         const postData = {
 //           messaging_product: 'whatsapp',
-//           to: '918866271602',
+//           to: `${phnbr}`,
 //           type: 'template',
 //           template: {
 //             name: 'delivery',
@@ -410,7 +410,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                 // JSON data for the POST request
 //                 const postData = {
 //                   messaging_product: 'whatsapp',
-//                   to: '918866271602',
+//                   to: `${phnbr}`,
 //                   type: 'template',
 //                   template: {
 //                     name: 'cake_hi_reply',
@@ -465,7 +465,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                       // JSON data for the POST request
 //                       const postData = {
 //                         messaging_product: 'whatsapp',
-//                         to: '918866271602',
+//                         to: `${phnbr}`,
 //                         type: 'template',
 //                         template: {
 //                           name: 'pickup',
@@ -503,7 +503,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                       // JSON data for the POST request
 //                       const postData = {
 //                         messaging_product: 'whatsapp',
-//                         to: '918866271602',
+//                         to: `${phnbr}`,
 //                         type: 'template',
 //                         template: {
 //                           name: 'delivery',
@@ -687,7 +687,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //               const postData = {
 //                 messaging_product: 'whatsapp',
 //                 recipient_type: "individual",
-//                 to: '918866271602',
+//                 to: `${phnbr}`,
 //                 type: 'text',
 //                 // template: {
 //                 //   name: "TEMPLATE_NAME",
@@ -779,7 +779,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                        "profile":{
 //                           "name":"Swayam Pandya"
 //                        },
-//                        "wa_id":"918866271602"
+//                        "wa_id":`${phnbr}`
 //                     }
 //                  ],
 //                  "messages":[
@@ -788,7 +788,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                           "from":"15551007051",
 //                           "id":"wamid.HBgMOTE4ODY2MjcxNjAyFQIAERgSMkY0MTlFMkIzMDA2RjJFNDk3AA=="
 //                        },
-//                        "from":"918866271602",
+//                        "from":`${phnbr}`,
 //                        "id":"wamid.HBgMOTE4ODY2MjcxNjAyFQIAEhggNzMxMzc5MTVDNUQ2NjM0Q0ZGQkYwM0E1NjhGMjJBODQA",
 //                        "timestamp":"1701944780",
 //                        "type":"button",
@@ -893,7 +893,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 // //               const postData = {
 // //                 messaging_product: 'whatsapp',
 // //                 recipient_type: "individual",
-// //                 to: '918866271602',
+// //                 to: `${phnbr}`,
 // //                 type: 'text',
 // //                 // template: {
 // //                 //   name: "TEMPLATE_NAME",
@@ -989,7 +989,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //               // JSON data for the POST request
 //               const postData = {
 //                 messaging_product: 'whatsapp',
-//                 to: '918866271602',
+//                 to: `${phnbr}`,
 //                 type: 'template',
 //                 template: {
 //                   name: 'cake_hi_reply',
@@ -1040,7 +1040,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                       // JSON data for the POST request
 //                       const postData = {
 //                         messaging_product: 'whatsapp',
-//                         to: '918866271602',
+//                         to: `${phnbr}`,
 //                         type: 'template',
 //                         template: {
 //                           name: 'pickup',
@@ -1078,7 +1078,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                       // JSON data for the POST request
 //                       const postData = {
 //                         messaging_product: 'whatsapp',
-//                         to: '918866271602',
+//                         to: `${phnbr}`,
 //                         type: 'template',
 //                         template: {
 //                           name: 'delivery',
@@ -1116,7 +1116,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                               // JSON data for the POST request
 //                               const postData = {
 //                                 messaging_product: 'whatsapp',
-//                                 to: '918866271602',
+//                                 to: `${phnbr}`,
 //                                 type: 'template',
 //                                 template: {
 //                                   name: 'home_delivery',
@@ -1284,7 +1284,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 // //                   "profile": {
 // //                     "name": "Swayam Pandya"
 // //                   },
-// //                   "wa_id": "918866271602"
+// //                   "wa_id": `${phnbr}`
 // //                 }
 // //               ],
 // //               "messages": [
@@ -1293,7 +1293,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 // //                     "from": "15551007051",
 // //                     "id": "wamid.HBgMOTE4ODY2MjcxNjAyFQIAERgSMkY0MTlFMkIzMDA2RjJFNDk3AA=="
 // //                   },
-// //                   "from": "918866271602",
+// //                   "from": `${phnbr}`,
 // //                   "id": "wamid.HBgMOTE4ODY2MjcxNjAyFQIAEhggNzMxMzc5MTVDNUQ2NjM0Q0ZGQkYwM0E1NjhGMjJBODQA",
 // //                   "timestamp": "1701944780",
 // //                   "type": "button",
