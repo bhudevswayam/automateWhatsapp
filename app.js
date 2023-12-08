@@ -16,6 +16,7 @@ app.get("/", function (req, res) {
   );
 });
 
+
 app.get("/webhook", function (req, res) {
   if (
     req.query["hub.mode"] == "subscribe" &&
@@ -29,7 +30,7 @@ app.get("/webhook", function (req, res) {
 app.post('/webhook', function (req, res) {
   try{
     const jsonData = req.body; // Parse the incoming JSON data
-    console.log(JSON.stringify(jsonData, null, 2));
+    console.log(jsonData);
 
     const messages = jsonData.entry[0].changes[0].value.messages;
     const buttonText = messages[0].button ? messages[0].button.text : null;
@@ -198,7 +199,130 @@ const postmanEnvironment = {
 
     }
 
-
+    else if (buttonText === "Birthday Cake") {
+      // Postman environment variables
+      
+      const postmanEnvironment = {
+          UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+        };
+        
+        // WhatsApp API endpoint
+        const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+        
+        // JSON data for the POST request
+        const postData = {
+          messaging_product: "whatsapp",
+          recipient_type: "individual",
+          preview_url: true,
+          to: `${phnbr}`,
+          type: "text",
+          text: {
+            body : "https://drive.google.com/file/d/1aWCCiC9ONj5zk3_LMvE27FerCdT6STOQ/view?usp=sharing"
+          }
+        }
+        
+        // Send the POST request using axios
+        axios.post(apiEndpoint, postData, {
+          headers: {
+            'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+            'Content-Type': 'application/json',
+          }
+        })
+          .then(response => {
+            console.log('Message sent successfully:');
+          })
+          .catch(error => {
+            console.error('Error sending message:' +error);
+          });
+      
+          }
+          else if (buttonText === "Anniversary Cake") {
+            // Postman environment variables
+            
+            const postmanEnvironment = {
+                UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+              };
+              
+              // WhatsApp API endpoint
+              const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+              
+              // JSON data for the POST request
+              const postData = {
+                messaging_product: "whatsapp",
+                recipient_type: "individual",
+                preview_url: true,
+                to: `${phnbr}`,
+                type: "text",
+                text: {
+                  body : "https://drive.google.com/file/d/1xey3wvmXg0mdxuHhMQ0pawdY-mSgfXyG/view?usp=sharing"
+                }
+              }
+              
+              // Send the POST request using axios
+              axios.post(apiEndpoint, postData, {
+                headers: {
+                  'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+                  'Content-Type': 'application/json',
+                }
+              })
+                .then(response => {
+                  console.log('Message sent successfully:');
+                })
+                .catch(error => {
+                  console.error('Error sending message:' +error);
+                });
+            
+                }else if (buttonText === "Special Cake") {
+                  // Postman environment variables
+                  
+                  const postmanEnvironment = {
+                      UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+                    };
+                    
+                    // WhatsApp API endpoint
+                    const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+                    
+                    // JSON data for the POST request
+                    const postData = {
+                      messaging_product: 'whatsapp',
+                      to: `${phnbr}`,
+                      type: 'template',
+                      template: {
+                        name: 'special_offer',
+                        language: {
+                          code: 'en',
+                        },
+                        components: [
+                          {
+                            type: "header",
+                            parameters: [
+                              {
+                                type: "image",
+                                image: {
+                                  link: "https://i.ibb.co/2vFFJNy/offer-ing.jpg"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                    };
+                    
+                    // Send the POST request using axios
+                    axios.post(apiEndpoint, postData, {
+                      headers: {
+                        'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+                        'Content-Type': 'application/json',
+                      }
+                    })
+                      .then(response => {
+                        console.log('Message sent successfully:');
+                      })
+                      .catch(error => {
+                        console.error('Error sending message:' +error);
+                      });
+                  
+                      }
     res.status(200).send('success');
 
   }catch (error) {
