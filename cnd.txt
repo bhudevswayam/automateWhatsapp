@@ -1,0 +1,455 @@
+app.post("/webhook", function (request, response) {
+  console.log('caalled');
+  try {
+    const jsonData = request.body; // Parse the incoming JSON data
+    console.log(JSON.stringify(jsonData, null, 2));
+    const buttonText = jsonData.entry[0].changes[0].value.messages[0].button.text;
+    const normalText = jsonData.entry[0].changes[0].value.messages[0].text.body.toLowerCase();
+
+          console.log("Incoming webhook: " + buttonText);
+          console.log("Incoming webhook: " + normalText);
+            if (normalText.includes("hi") || normalText.includes("hello")) {
+            // Postman environment variables
+            
+            const postmanEnvironment = {
+                UserAccessToken: 'EAAN8IwQAAloBOxpcmM9iArWIA2tqtZAS7co0ktggaDhMDL7hcr1ZBqAr284oIJGaBTBZAaiQG8p7vfjp3RZAnNYcZCceFKZCzr3Rbg0QqZA4CLXsZBQF7ZC0mGVptgW9Y8Qtyy3rxLyBz4hTMpZAEAaEL8KZA4EPkHZBAqPFNswMFKBSVMpvrlOFzPtY9Ve5DoSBZBMZAgDtADRg9FtBmZAspwTzqwZD',
+              };
+              
+              // WhatsApp API endpoint
+              const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+              
+              // JSON data for the POST request
+              const postData = {
+                messaging_product: 'whatsapp',
+                to: '918866271602',
+                type: 'template',
+                template: {
+                  name: 'cake_hi_reply',
+                  language: {
+                    code: 'en',
+                  },
+                  components: [
+                    {
+                      type: "header",
+                      parameters: [
+                        {
+                          type: "image",
+                          image: {
+                            link: "https://enterprise.press/wp-content/uploads/2020/12/monginis-1600px.jpg"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+              };
+              
+              // Send the POST request using axios
+              axios.post(apiEndpoint, postData, {
+                headers: {
+                  'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+                  'Content-Type': 'application/json',
+                }
+              })
+                .then(response => {
+                  console.log('Message sent successfully:');
+                })
+                .catch(error => {
+                  console.error('Error sending message:' +error);
+                });
+            
+                }
+                
+            
+            
+        
+    
+
+     if (buttonText === "Catalog") {
+      // Postman environment variables
+      
+      const postmanEnvironment = {
+          UserAccessToken: 'EAAN8IwQAAloBOxpcmM9iArWIA2tqtZAS7co0ktggaDhMDL7hcr1ZBqAr284oIJGaBTBZAaiQG8p7vfjp3RZAnNYcZCceFKZCzr3Rbg0QqZA4CLXsZBQF7ZC0mGVptgW9Y8Qtyy3rxLyBz4hTMpZAEAaEL8KZA4EPkHZBAqPFNswMFKBSVMpvrlOFzPtY9Ve5DoSBZBMZAgDtADRg9FtBmZAspwTzqwZD',
+        };
+        
+        // WhatsApp API endpoint
+        const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+        
+        // JSON data for the POST request
+        const postData = {
+          messaging_product: 'whatsapp',
+          to: '918866271602',
+          type: 'template',
+          template: {
+            name: 'pickup',
+            language: {
+              code: 'en_US',
+            },
+          },
+        };
+        
+        // Send the POST request using axios
+        axios.post(apiEndpoint, postData, {
+          headers: {
+            'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+            'Content-Type': 'application/json',
+          }
+        })
+          .then(response => {
+            console.log('Message sent successfully:');
+          })
+          .catch(error => {
+            console.error('Error sending message:' +error);
+          });
+      
+          }
+  else if (buttonText === "Special Offers") {
+      // Postman environment variables
+      
+      const postmanEnvironment = {
+          UserAccessToken: 'EAAN8IwQAAloBOxpcmM9iArWIA2tqtZAS7co0ktggaDhMDL7hcr1ZBqAr284oIJGaBTBZAaiQG8p7vfjp3RZAnNYcZCceFKZCzr3Rbg0QqZA4CLXsZBQF7ZC0mGVptgW9Y8Qtyy3rxLyBz4hTMpZAEAaEL8KZA4EPkHZBAqPFNswMFKBSVMpvrlOFzPtY9Ve5DoSBZBMZAgDtADRg9FtBmZAspwTzqwZD',
+        };
+        
+        // WhatsApp API endpoint
+        const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+        
+        // JSON data for the POST request
+        const postData = {
+          messaging_product: 'whatsapp',
+          to: '918866271602',
+          type: 'template',
+          template: {
+            name: 'delivery',
+            language: {
+              code: 'en_US',
+            },
+          },
+        };
+        
+        // Send the POST request using axios
+        axios.post(apiEndpoint, postData, {
+          headers: {
+            'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+            'Content-Type': 'application/json',
+          }
+        })
+          .then(response => {
+            console.log('Message sent successfully:');
+          })
+          .catch(error => {
+            console.error('Error sending message:' +error);
+          });
+      
+          }
+    
+
+
+    response.sendStatus(200);
+  } catch (error) {
+    console.error("Error in /webhook:", error);
+    response.sendStatus(500); // Respond with an error status
+  }
+});
+
+when i test this code in postman with 'http://localhost:3001/webhook' url and body data as {
+      "object": "whatsapp_business_account",
+      "entry": [
+        {
+          "id": "105774542583244",
+          "changes": [
+            {
+              "value": {
+                "messaging_product": "whatsapp",
+                "metadata": {
+                  "display_phone_number": "15551007051",
+                  "phone_number_id": "107124295779726"
+                },
+                "contacts": [
+                  {
+                    "profile": {
+                      "name": "Swayam Pandya"
+                    },
+                    "wa_id": "918866271602"
+                  }
+                ],
+                "messages": [
+                  {
+                    "from": "918866271602",
+                    "id": "wamid.HBgMOTE4ODY2MjcxNjAyFQIAEhgSQ0FBNDVERjBENjkyMjlCN0EzAA==",
+                    "timestamp": "1701952916",
+                    "text": {
+                      "body": "hi"
+                    },
+                    "type": "text"
+                  }
+                ]
+              },
+              "field": "messages"
+            }
+          ]
+        }
+      ]
+    }
+
+
+it shows 'Bad Request'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+else if (event?.requestContext?.http?.method === "POST") {
+    // process POST request (WhatsApp chat messages)
+    // https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
+    // to learn about WhatsApp text message payload structure
+    let body = JSON.parse(event.body)
+    let entries = body.entry;
+    for (let entry of entries) {
+      for (let change of entry.changes) {
+        let value = change.value;
+        if(value != null) {
+          let phone_number_id = value.metadata.phone_number_id;
+          if (value.messages != null) {
+            for (let message of value.messages) {
+              let message_body = message.text.body;
+              let reply_message = "This reply from cubent default: " + message_body;
+              if (message.type === 'text') {
+                
+                // api to get information data
+                
+                if(message_body === "Hi")
+                {
+                  reply_message = "Greetings from Cubent... \nHow may I help you? : " + message_body;
+                }
+                else if(message_body === "Stop")
+                {
+                  reply_message = "Have a good day: " + message_body;
+                }
+                else if(message_body === "Menu")
+                {
+                  reply_message = "Please Select Item: " + message_body;
+                }
+                else if(message_body === "SelectedOption")
+                {
+                  reply_message = "SelectedOption " + message_body;
+                }
+                else if(message_body === "Delivery")
+                {
+                  reply_message = "Delivery Mode\nPick up\nHome Delivery " + message_body;
+                }
+                else if(message_body === "Pick up")
+                {
+                  reply_message = "Thanks for choosing this item, Your choice is OSUM." + message_body;
+                }
+                else if(message_body === "Home Delivery")
+                {
+                  reply_message = "Great selection but We are recommending to visit our store." + message_body;
+                }
+                else
+                {
+                  reply_message = "Thanks to connect CUBENT." + message_body;
+                }
+                let from = message.from;
+                
+                sendReply(phone_number_id, WHATSAPP_TOKEN, from, reply_message);
+                const responseBody = "Done";
+                response = {
+                    "statusCode": 200,
+                    "body": JSON.stringify(responseBody),
+                    "isBase64Encoded": false
+                };
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+const https = require("https");
+
+exports.handler = async (event)  => {
+  const VERIFY_TOKEN = "cubent_cb";
+  const WHATSAPP_TOKEN = "EAAN8IwQAAloBO8jSdZAZAfXP2sIuyO5JRpntUNdT2ZAZAqrwj602F1tMuMsXZBj0JVeZBZAQKfcJTaQVyKEUrvivFl0fOCOlkjB4zs52D1bVjOrdpjvjoBh27KcEflXl9U6iZAOR8ShILvhFaMccRxwCFDZAZCtTPWBAz3zlxAowSGshG5xSVdsq1bQkbs2u0nnj2JIcD7hMnhxyZAd52M7xSwZD";
+
+  let response;
+  if (event?.requestContext?.http?.method === "GET") {
+    // https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests
+    // to learn more about GET request for webhook verification
+    let queryParams = event?.queryStringParameters;
+    if (queryParams != null) {
+      const mode = queryParams["hub.mode"];
+      if (mode == "subscribe") {
+        const verifyToken = queryParams["hub.verify_token"];
+        if (verifyToken == VERIFY_TOKEN) {
+          let challenge = queryParams["hub.challenge"];
+          response = {
+              "statusCode": 200,
+              "body": parseInt(challenge),
+              "isBase64Encoded": false
+          };
+        } else {
+          const responseBody = "Error, wrong validation token";
+          response = {
+              "statusCode": 403,
+              "body": JSON.stringify(responseBody),
+              "isBase64Encoded": false
+          };
+        }
+      } else {
+          const responseBody = "Error, wrong mode";
+          response = {
+              "statusCode": 403,
+              "body": JSON.stringify(responseBody),
+              "isBase64Encoded": false
+        };
+      }
+    }
+    else {
+      const responseBody = "Error, no query parameters";
+      response = {
+          "statusCode": 403,
+          "body": JSON.stringify(responseBody),
+          "isBase64Encoded": false
+      };
+    }
+  } else if (event?.requestContext?.http?.method === "POST") {
+    // process POST request (WhatsApp chat messages)
+    // https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
+    // to learn about WhatsApp text message payload structure
+    let body = JSON.parse(event.body)
+    let entries = body.entry;
+    for (let entry of entries) {
+      for (let change of entry.changes) {
+        let value = change.value;
+        if(value != null) {
+          let phone_number_id = value.metadata.phone_number_id;
+          if (value.messages != null) {
+            for (let message of value.messages) {
+              let message_body = message.text.body;
+              let reply_message = "This reply from cubent default: " + message_body;
+              if (message.type === 'text') {
+                
+                // api to get information data
+                
+                if(message_body === "Hi")
+                {
+                  reply_message = "Greetings from Cubent... \nHow may I help you? : " + message_body;
+                }
+                else if(message_body === "Stop")
+                {
+                  reply_message = "Have a good day: " + message_body;
+                }
+                else if(message_body === "Menu")
+                {
+                  reply_message = "Please Select Item: " + message_body;
+                }
+                else if(message_body === "SelectedOption")
+                {
+                  reply_message = "SelectedOption " + message_body;
+                }
+                else if(message_body === "Delivery")
+                {
+                  reply_message = "Delivery Mode\nPick up\nHome Delivery " + message_body;
+                }
+                else if(message_body === "Pick up")
+                {
+                  reply_message = "Thanks for choosing this item, Your choice is OSUM." + message_body;
+                }
+                else if(message_body === "Home Delivery")
+                {
+                  reply_message = "Great selection but We are recommending to visit our store." + message_body;
+                }
+                else
+                {
+                  reply_message = "Thanks to connect CUBENT." + message_body;
+                }
+                let from = message.from;
+                
+                sendReply(phone_number_id, WHATSAPP_TOKEN, from, reply_message);
+                const responseBody = "Done";
+                response = {
+                    "statusCode": 200,
+                    "body": JSON.stringify(responseBody),
+                    "isBase64Encoded": false
+                };
+              }
+            }
+          }
+        }
+      }
+    }
+  } else {
+    const responseBody = "Unsupported method";
+    response = {
+        "statusCode": 403,
+        "body": JSON.stringify(responseBody),
+        "isBase64Encoded": false
+    };
+  }
+  
+  return response;
+}
+
+const sendReply = (phone_number_id, whatsapp_token, to, reply_message) => {
+  let json = {
+    messaging_product: "whatsapp",
+    to: to,
+    text: { body: reply_message },
+  };
+  let data = JSON.stringify(json);
+  
+  let path = "/v17.0/"+phone_number_id+"/messages?access_token="+whatsapp_token;
+  let options = {
+    host: "graph.facebook.com",
+    path: path,
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+  };
+  let callback = (response) => {
+    let str = "";
+    response.on("data", (chunk) => {
+      str += chunk;
+    });
+    response.on("end", () => {
+    });
+  };
+  let req = https.request(options, callback);
+  req.on("error", (e) => {});
+  req.write(data);
+  req.end();
+}
