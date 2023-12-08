@@ -82,3 +82,22 @@
       ]
     }
 
+    {
+      "entry": [
+        {
+          "changes": [
+            {
+              "value": {
+                "messages": [
+                  {
+                    "text": {
+                      "body": "Hi there! How can I help you today?"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }

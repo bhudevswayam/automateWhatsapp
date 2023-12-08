@@ -1,14 +1,38 @@
 const axios = require('axios');
 var express = require("express");
 var bodyParser = require("body-parser");
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 
-const mongoURI = "mongodb+srv://swayampandya1236:Hgm4dqVLM4KRAIKE@dummydb.kklcpad.mongodb.net/?retryWrites=true&w=majority";
-
-const dbName = 'testdata';
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Connect to MongoDB
+mongoose.connect('mongodb://127.0.0.1:27017/monginisuser', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+const userSchema = new mongoose.Schema({
+  name:{
+    type: String
+  },
+  phoneNumber: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  flag: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const User = mongoose.model('User', userSchema);
 
 app.get("/", function (req, res) {
   res.send(
@@ -35,6 +59,7 @@ app.post('/webhook', function (req, res) {
     const messages = jsonData.entry[0].changes[0].value.messages;
     const buttonText = messages[0].button ? messages[0].button.text : null;
     const normalText = messages[0].text ? messages[0].text.body.toLowerCase() : null;
+    const name = jsonData.entry[0].changes[0].value.contacts[0].profile.name ? jsonData.entry[0].changes[0].value.contacts[0].profile.name : 'User';
     const phnbr = messages[0].from;
     console.log("Incoming webhook (buttonText): " + buttonText);
     console.log("Incoming webhook (normalText): " + normalText);
@@ -74,6 +99,20 @@ app.post('/webhook', function (req, res) {
             ]
           },
         };
+
+        const newUser = new User({
+          name: name,
+          phoneNumber: phnbr,
+          flag: true, // Set the flag as needed
+        });
+    
+        newUser.save()
+          .then(() => {
+            console.log('User saved to the database');
+          })
+          .catch((error) => {
+            console.error('Error saving user to the database:', error);
+          });
         
         // Send the POST request using axios
         axios.post(apiEndpoint, postData, {
@@ -335,6 +374,7 @@ const postmanEnvironment = {
 var listener = app.listen(process.env.PORT || 3001, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
+
 // app.post("/webhook", function (req, response) {
 //   try {
 //     const jsonData = req.body; // Parse the incoming JSON data
