@@ -15,10 +15,8 @@ app.get("/", function (req, res) {
     "Simple WhatsApp Webhook tester</br>There is no front-end, see server.js for implementation!"
   );
 });
-app.get("/test", function (req, res) {
-  res.send('test')
-});
-app.post("/webhook", function (req, res) {
+
+app.get("/webhook", function (req, res) {
   if (
     req.query["hub.mode"] == "subscribe" &&
     req.query["hub.verify_token"] == "mysecret"
@@ -28,7 +26,7 @@ app.post("/webhook", function (req, res) {
     res.sendStatus(400);
   }
 });
-app.post('/webhoo', function (req, res) {
+app.post('/webhook', function (req, res) {
   try{
     const jsonData = req.body; // Parse the incoming JSON data
     console.log(JSON.stringify(jsonData, null, 2));
@@ -182,6 +180,10 @@ const postmanEnvironment = {
   }
 
 })
+
+var listener = app.listen(process.env.PORT || 3001, function () {
+  console.log("Your app is listening on port " + listener.address().port);
+});
 // app.post("/webhook", function (req, response) {
 //   try {
 //     const jsonData = req.body; // Parse the incoming JSON data
@@ -345,9 +347,7 @@ const postmanEnvironment = {
 
  
 
-var listener = app.listen(process.env.PORT || 3001, function () {
-  console.log("Your app is listening on port " + listener.address().port);
-});
+
 
 
 
