@@ -42,7 +42,7 @@ app.post('/webhook', function (req, res) {
       // Postman environment variables
       
       const postmanEnvironment = {
-          UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+          UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
         };
         
         // WhatsApp API endpoint
@@ -99,7 +99,7 @@ else if (buttonText === "Catalog") {
 // Postman environment variables
 
 const postmanEnvironment = {
-    UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+    UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
   };
   
   // WhatsApp API endpoint
@@ -111,10 +111,23 @@ const postmanEnvironment = {
     to: '918866271602',
     type: 'template',
     template: {
-      name: 'pickup',
+      name: 'catalog',
       language: {
-        code: 'en_US',
+        code: 'en',
       },
+      components: [
+        {
+          type: "header",
+          parameters: [
+            {
+              type: "image",
+              image: {
+                link: "https://www.sheknows.com/wp-content/uploads/2018/08/3._Rainbow_Sprinkes_b.jpeg"
+              }
+            }
+          ]
+        }
+      ]
     },
   };
   
@@ -137,7 +150,7 @@ else if (buttonText === "Special Offers") {
 // Postman environment variables
 
 const postmanEnvironment = {
-    UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+    UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
   };
   
   // WhatsApp API endpoint
@@ -149,10 +162,23 @@ const postmanEnvironment = {
     to: '918866271602',
     type: 'template',
     template: {
-      name: 'delivery',
+      name: 'special_offer',
       language: {
-        code: 'en_US',
+        code: 'en',
       },
+      components: [
+        {
+          type: "header",
+          parameters: [
+            {
+              type: "image",
+              image: {
+                link: "https://i.ibb.co/2vFFJNy/offer-ing.jpg"
+              }
+            }
+          ]
+        }
+      ]
     },
   };
   
@@ -171,6 +197,7 @@ const postmanEnvironment = {
     });
 
     }
+
 
     res.status(200).send('success');
 
@@ -200,7 +227,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //             // Postman environment variables
             
 //             const postmanEnvironment = {
-//                 UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//                 UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //               };
               
 //               // WhatsApp API endpoint
@@ -257,7 +284,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //       // Postman environment variables
       
 //       const postmanEnvironment = {
-//           UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//           UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //         };
         
 //         // WhatsApp API endpoint
@@ -295,7 +322,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //       // Postman environment variables
       
 //       const postmanEnvironment = {
-//           UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//           UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //         };
         
 //         // WhatsApp API endpoint
@@ -374,7 +401,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 
 //                 // Postman environment variables
 //                 const postmanEnvironment = {
-//                   UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//                   UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //                 };
 
 //                 // WhatsApp API endpoint
@@ -429,7 +456,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
     
 //                       // Postman environment variables
 //                       const postmanEnvironment = {
-//                         UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//                         UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //                       };
     
 //                       // WhatsApp API endpoint
@@ -467,7 +494,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
     
 //                       // Postman environment variables
 //                       const postmanEnvironment = {
-//                         UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//                         UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //                       };
     
 //                       // WhatsApp API endpoint
@@ -632,7 +659,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //           const emailMatch = textBody.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g);
 //           const email = emailMatch ? emailMatch[0] : null;
 //             const postmanEnvironment = {
-//                 UserAccessToken: 'EAAN8IwQAAloBO5LyoSzctUfvmc05TPugELHlisgzv2akYwOyS9MRSwTvkdQokwqC0PASsogSMKFTviaBZAX8EnOyHpflZAlbScCZCztrdyBgfZClJwmVIZBZC8xS353sZAIJVRwZCxmDVoZAcwJQMXzLWpviNyXqAw6MU0jJqQF5iGyPAl9vhZBJUOraIjxdPQCnZB0V05SZC11JHnCv4FZCwe9kZD',
+//                 UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
 //               };
 //           if (email) {
 //             // Connect to MongoDB
