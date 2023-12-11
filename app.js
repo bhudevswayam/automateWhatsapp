@@ -8,10 +8,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://swayampandya1236:Hgm4dqVLM4KRAIKE@dummydb.kklcpad.mongodb.net/?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb+srv://swayampandya1236:Hgm4dqVLM4KRAIKE@dummydb.kklcpad.mongodb.net/?retryWrites=true&w=majority');
 
 const db = mongoose.connection;
 
@@ -28,7 +25,7 @@ const userSchema = new mongoose.Schema({
   },
   flag: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 
@@ -64,11 +61,81 @@ app.post('/webhook', function (req, res) {
     console.log("Incoming webhook (buttonText): " + buttonText);
     console.log("Incoming webhook (normalText): " + normalText);
 
+    if (normalText === "broadcast") {
+      console.log("Entering 'broadcast' condition");
+    
+      const postmanEnvironment = {
+        UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
+      };
+      
+      // WhatsApp API endpoint
+      const apiEndpoint = 'https://graph.facebook.com/v17.0/107124295779726/messages';
+    
+      // Retrieve all users from the database
+      User.find({ flag: true }) // Only select users with flag set to true
+        .then(users => {
+          console.log('Users found for broadcast:', users);
+    
+          // Iterate over each user to send the broadcast message
+          users.forEach(user => {
+            const userPhoneNumber = user.phoneNumber;
+    
+            // Customize your broadcast message here
+            const postData = {
+              messaging_product: 'whatsapp',
+              to: userPhoneNumber, // Use the user's phone number here
+              type: 'template',
+              template: {
+                name: 'cake_intro',
+                language: {
+                  code: 'en',
+                },
+                components: [
+                  {
+                    type: "header",
+                    parameters: [
+                      {
+                        type: "image",
+                        image: {
+                          link: "https://michaelhyatt.com/wp-content/uploads/2017/11/celebration-1920.jpg"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+            };
+    
+            // Send the broadcast message using axios
+            axios.post(apiEndpoint, postData, {
+              headers: {
+                'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+                'Content-Type': 'application/json',
+              }
+            })
+              .then(response => {
+                console.log(`Broadcast message sent successfully to ${userPhoneNumber}`);
+              })
+              .catch(error => {
+                console.error(`Error sending broadcast message to ${userPhoneNumber}:`, error);
+              });
+          });
+        })
+        .catch(err => {
+          console.error('Error retrieving users for broadcast:', err);
+        });
+    }
+    
+    
+    
+
+    
+
     if (normalText !== null && (normalText.includes("hi") || normalText.includes("hello"))) {
       // Postman environment variables
       
       const postmanEnvironment = {
-          UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+          UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
         };
         
         // WhatsApp API endpoint
@@ -129,6 +196,25 @@ app.post('/webhook', function (req, res) {
           });
       
           }
+
+          else if (normalText === "stop") {
+            console.log("Entering 'stop' condition");
+            // Log to check if user is found
+            User.findOne({ phoneNumber: phnbr })
+              .then(user => {
+                console.log('User found:', user);
+                // If 'normalText' is 'stop', set the 'flag' to false
+                return User.findOneAndUpdate({ phoneNumber: phnbr }, { flag: false }, { new: true });
+              })
+              .then(updatedUser => {
+                console.log('User flag set to false:', updatedUser);
+              })
+              .catch(err => {
+                console.error('Error updating user flag:', err);
+              });
+          }
+          
+          
           
       
       
@@ -139,7 +225,7 @@ else if (buttonText === "Catalog") {
 // Postman environment variables
 
 const postmanEnvironment = {
-    UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+    UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
   };
   
   // WhatsApp API endpoint
@@ -190,7 +276,7 @@ else if (buttonText === "Special Offers") {
 // Postman environment variables
 
 const postmanEnvironment = {
-    UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+    UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
   };
   
   // WhatsApp API endpoint
@@ -242,7 +328,7 @@ const postmanEnvironment = {
       // Postman environment variables
       
       const postmanEnvironment = {
-          UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+          UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
         };
         
         // WhatsApp API endpoint
@@ -279,7 +365,7 @@ const postmanEnvironment = {
             // Postman environment variables
             
             const postmanEnvironment = {
-                UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+                UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
               };
               
               // WhatsApp API endpoint
@@ -315,7 +401,7 @@ const postmanEnvironment = {
                   // Postman environment variables
                   
                   const postmanEnvironment = {
-                      UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+                      UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
                     };
                     
                     // WhatsApp API endpoint
@@ -391,7 +477,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //             // Postman environment variables
             
 //             const postmanEnvironment = {
-//                 UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//                 UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //               };
               
 //               // WhatsApp API endpoint
@@ -448,7 +534,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //       // Postman environment variables
       
 //       const postmanEnvironment = {
-//           UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//           UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //         };
         
 //         // WhatsApp API endpoint
@@ -486,7 +572,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //       // Postman environment variables
       
 //       const postmanEnvironment = {
-//           UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//           UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //         };
         
 //         // WhatsApp API endpoint
@@ -565,7 +651,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 
 //                 // Postman environment variables
 //                 const postmanEnvironment = {
-//                   UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//                   UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //                 };
 
 //                 // WhatsApp API endpoint
@@ -620,7 +706,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
     
 //                       // Postman environment variables
 //                       const postmanEnvironment = {
-//                         UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//                         UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //                       };
     
 //                       // WhatsApp API endpoint
@@ -658,7 +744,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
     
 //                       // Postman environment variables
 //                       const postmanEnvironment = {
-//                         UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//                         UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //                       };
     
 //                       // WhatsApp API endpoint
@@ -823,7 +909,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //           const emailMatch = textBody.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g);
 //           const email = emailMatch ? emailMatch[0] : null;
 //             const postmanEnvironment = {
-//                 UserAccessToken: 'EAAN8IwQAAloBO878KCdXCgSggxkEWjaSr9hPugebfIzrJ5wba1Ks1xqr1P2Nasr9hNyXAXEtGiaNJ70w17pJcQemoZCTKgf747JJgczpSQkggthqeOVRyAcUZC3o0pwgJZA7c2eeU6P4wDwDJQZBiJgVAUccPBOBRVS41PUb0PP8iI4uEwW2cWU63vvLW5ZBhKFrqihkWzjMckAb28vwZD',
+//                 UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //               };
 //           if (email) {
 //             // Connect to MongoDB
@@ -1029,7 +1115,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 // //           const emailMatch = textBody.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g);
 // //           const email = emailMatch ? emailMatch[0] : null;
 // //             const postmanEnvironment = {
-// //                 UserAccessToken: 'EAAP0v7FwAB0BOZBZCl0VJvRx3mIQ94MnEIUvaVasLYu4XIJbw8XabhSjgnR8QRgRiBVNAPZCi4rLBLPwmUDB8LZAvyehQlLGwUbkvAM9FRhjiZAotWOoZAD6ANuKTwIVbGiYeK4JuXHNS9iSlZA2mqSUEn75UDEzeXPZBx4hYZBfN2V917UbB4NgHhTrv8l7tPgkVpmHGpml3PL516pTsKrEZD',
+// //                 UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 // //               };
 // //           if (email) {
 // //             // Connect to MongoDB
@@ -1144,7 +1230,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //             // Postman environment variables
             
 //             const postmanEnvironment = {
-//                 UserAccessToken: 'EAAP0v7FwAB0BOZBZCl0VJvRx3mIQ94MnEIUvaVasLYu4XIJbw8XabhSjgnR8QRgRiBVNAPZCi4rLBLPwmUDB8LZAvyehQlLGwUbkvAM9FRhjiZAotWOoZAD6ANuKTwIVbGiYeK4JuXHNS9iSlZA2mqSUEn75UDEzeXPZBx4hYZBfN2V917UbB4NgHhTrv8l7tPgkVpmHGpml3PL516pTsKrEZD',
+//                 UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //               };
               
 //               // WhatsApp API endpoint
@@ -1195,7 +1281,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                     // Postman environment variables
                     
 //                     const postmanEnvironment = {
-//                         UserAccessToken: 'EAAP0v7FwAB0BOZBZCl0VJvRx3mIQ94MnEIUvaVasLYu4XIJbw8XabhSjgnR8QRgRiBVNAPZCi4rLBLPwmUDB8LZAvyehQlLGwUbkvAM9FRhjiZAotWOoZAD6ANuKTwIVbGiYeK4JuXHNS9iSlZA2mqSUEn75UDEzeXPZBx4hYZBfN2V917UbB4NgHhTrv8l7tPgkVpmHGpml3PL516pTsKrEZD',
+//                         UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //                       };
                       
 //                       // WhatsApp API endpoint
@@ -1233,7 +1319,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                     // Postman environment variables
                     
 //                     const postmanEnvironment = {
-//                         UserAccessToken: 'EAAP0v7FwAB0BOZBZCl0VJvRx3mIQ94MnEIUvaVasLYu4XIJbw8XabhSjgnR8QRgRiBVNAPZCi4rLBLPwmUDB8LZAvyehQlLGwUbkvAM9FRhjiZAotWOoZAD6ANuKTwIVbGiYeK4JuXHNS9iSlZA2mqSUEn75UDEzeXPZBx4hYZBfN2V917UbB4NgHhTrv8l7tPgkVpmHGpml3PL516pTsKrEZD',
+//                         UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //                       };
                       
 //                       // WhatsApp API endpoint
@@ -1271,7 +1357,7 @@ var listener = app.listen(process.env.PORT || 3001, function () {
 //                             // Postman environment variables
                             
 //                             const postmanEnvironment = {
-//                                 UserAccessToken: 'EAAP0v7FwAB0BOZBZCl0VJvRx3mIQ94MnEIUvaVasLYu4XIJbw8XabhSjgnR8QRgRiBVNAPZCi4rLBLPwmUDB8LZAvyehQlLGwUbkvAM9FRhjiZAotWOoZAD6ANuKTwIVbGiYeK4JuXHNS9iSlZA2mqSUEn75UDEzeXPZBx4hYZBfN2V917UbB4NgHhTrv8l7tPgkVpmHGpml3PL516pTsKrEZD',
+//                                 UserAccessToken: 'EAAP0v7FwAB0BO0QXk8zKVSzt5Of1wO7poiSRPgSA35KmBZCICRBrGKyRUXCz5j6qBSZCCSKrZCT3LSZAS65cE7gVGDkvGnLOOtHBZBw6WUN3m32vtDBfkFPjGyW4cxUZADehutc3a4DDMQSlIfSz7MhNVlr44SRB8LtEu4ns01yJ4aNIZCv8R6gpVikZCoEwZA8Qp',
 //                               };
                               
 //                               // WhatsApp API endpoint
