@@ -167,34 +167,57 @@ app.post('/webhook', function (req, res) {
           },
         };
 
-        const newUser = new User({
-          name: name,
-          phoneNumber: phnbr,
-          flag: true, // Set the flag as needed
-        });
-    
-        newUser.save()
+        // Check if the user exists in the database
+  User.findOne({ phoneNumber: phnbr })
+  .then(existingUser => {
+    if (existingUser) {
+      // User exists, check and update the flag
+      if (!existingUser.flag) {
+        // If flag is false, update it to true
+        existingUser.flag = true;
+        existingUser.save()
           .then(() => {
-            console.log('User saved to the database');
-          })
-          .catch((error) => {
-            console.error('Error saving user to the database:', error);
-          });
-        
-        // Send the POST request using axios
-        axios.post(apiEndpoint, postData, {
-          headers: {
-            'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
-            'Content-Type': 'application/json',
-          }
-        })
-          .then(response => {
-            console.log('Message sent successfully:');
+            console.log('User flag set to true for an existing user:', existingUser);
           })
           .catch(error => {
-            console.error('Error sending message:' +error);
+            console.error('Error updating user flag:', error);
           });
-      
+      }
+      // User is already in the database, no need to add again
+    } else {
+      // User does not exist, add the user to the database
+      const newUser = new User({
+        name: name,
+        phoneNumber: phnbr,
+        flag: true, // Set the flag as needed
+      });
+
+      newUser.save()
+        .then(() => {
+          console.log('New user saved to the database:', newUser);
+        })
+        .catch((error) => {
+          console.error('Error saving new user to the database:', error);
+        });
+    }
+
+    // Send the POST request using axios
+    axios.post(apiEndpoint, postData, {
+      headers: {
+        'Authorization': `Bearer ${postmanEnvironment.UserAccessToken}`,
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => {
+        console.log('Message sent successfully:');
+      })
+      .catch(error => {
+        console.error('Error sending message:' + error);
+      });
+  })
+  .catch(error => {
+    console.error('Error checking user in the database:', error);
+  });
           }
 
           else if (normalText === "stop") {
